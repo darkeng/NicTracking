@@ -10,6 +10,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::resource('vehiculos', 'VehiculoController');
+Route::resource('vehiculos.trackers', 'TrackerController');
+Route::resource('trackers.posiciones', 'PosicionController');
 
 Route::get('/', function () {
     return view('welcome');
