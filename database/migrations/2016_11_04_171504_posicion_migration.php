@@ -14,8 +14,8 @@ class PosicionMigration extends Migration
     {
         Schema::create('posiciones', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('lat');
-            $table->integer('lan');
+            $table->double('lat');
+            $table->double('lan');
             $table->dateTime('fecha_registro');
             $table->integer('tracker_id')->unsigned();
             $table->foreign('tracker_id')->references('id')->on('trackers');
