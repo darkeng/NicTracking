@@ -14,16 +14,16 @@ class TrackerSeeder extends Seeder
      */
     public function run()
     {    	
-        $nVehiculos=Vehiculo::all()->count();
+        $vehiculosID=Vehiculo::all(['id']);
         $faker=Factory::create('es_ES');
-    	for($i=1; $i<=$nVehiculos; $i++)
+    	for($i=0; $i<Vehiculo::all(['id'])->count(); $i++)
     	{
 	        Tracker::create
 	        ([
-	        	'imei' => $faker->numerify('############'),
+	        	'imei' => $faker->numerify('1#########'),
 	        	'numSIM' => $faker->numerify('8#######'),
 	        	'descripcion' => $faker->text(250),
-	        	'vehiculo_id' =>$i
+	        	'vehiculo_id' =>$vehiculosID[$i]['id']
 	        ]);
 	    }
     }

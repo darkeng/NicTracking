@@ -18,8 +18,8 @@ class PosicionMigration extends Migration
             $table->double('lan');
             $table->dateTime('fecha_registro');
             $table->integer('tracker_id')->unsigned();
-            $table->foreign('tracker_id')->references('id')->on('trackers');
             $table->timestamps();
+            $table->foreign('tracker_id')->references('id')->on('trackers');
         });
     }
 

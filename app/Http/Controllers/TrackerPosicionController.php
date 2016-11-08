@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Tracker;
-
-class TrackerController extends Controller
+class TrackerPosicionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +16,19 @@ class TrackerController extends Controller
      */
     public function index()
     {
-        return response()->json(['datos' => Tracker::all()],200);
+        //
     }
-    
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -40,12 +48,18 @@ class TrackerController extends Controller
      */
     public function show($id)
     {
-        $tracker = Tracker::find($id);
-        if(!$tracker)
-        {
-            return response()->json(['mensaje' => 'Recurso no encontrado.', 'codigo' => 404], 404);
-        }
-        return response()->json(['datos' => $tracker], 200);
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**

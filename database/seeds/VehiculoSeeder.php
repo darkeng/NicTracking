@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Vehiculo;
-use App\Usuario;
+use App\User;
 use Faker\Factory;
 
 class VehiculoSeeder extends Seeder
@@ -14,8 +14,9 @@ class VehiculoSeeder extends Seeder
      */
     public function run()
     {
-    	$nUsuarios=Usuario::all()->count();
+    	$nUsuarios=User::all()->count();
     	$tipo = array('motocicleta','camion pesado','camion','camioneta','bus', 'van', 'auto cerrado');
+        $marca= array('Toyota', 'Honda', 'Mazda', 'Chevrolet', 'Volkswagen', 'Hyundai', 'Nissan', 'Ford', 'Suzuki', 'Mercedes Benz');
 
         $faker=Factory::create('es_ES');
         for($i=0; $i<10; $i++)
@@ -23,11 +24,11 @@ class VehiculoSeeder extends Seeder
         	Vehiculo::create
         	([
         		'tipo' => $faker->randomElement($tipo),
-        		'marca' => $faker->company(),
+        		'marca' => $faker->randomElement($marca),
         		'modelo' => $faker->bothify('??-####'),
         		'color' => $faker->colorName(),
         		'matricula' => $faker->randomNumber(6),
-        		'usuario_id' => $faker->numberBetween(1,$nUsuarios)
+        		'user_id' => $faker->numberBetween(1,$nUsuarios)
         	]);
         }
     }

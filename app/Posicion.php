@@ -11,6 +11,6 @@ class Posicion extends Model
 	
 	public function tracker()
 	{
-		$this->belongsTo('Tracker');
+		$this->belongsTo('App\Tracker');
 	}
 }

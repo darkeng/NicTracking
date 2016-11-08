@@ -14,12 +14,12 @@ class TrackerMigration extends Migration
     {
         Schema::create('trackers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('imei');
+            $table->integer('imei')->unique();
             $table->integer('numSIM');
             $table->string('descripcion');
             $table->integer('vehiculo_id')->unsigned();
-            $table->foreign('vehiculo_id')->references('id')->on('vehiculos');
             $table->timestamps();
+            $table->foreign('vehiculo_id')->references('id')->on('vehiculos');
         });
     }
 

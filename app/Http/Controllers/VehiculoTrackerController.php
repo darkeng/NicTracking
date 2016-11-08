@@ -7,20 +7,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Vehiculo;
 use App\Tracker;
 
-class TrackerController extends Controller
+class VehiculoTrackerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return response()->json(['datos' => Tracker::all()],200);
+        $vehiculo = Vehiculo::find($id);
+        if(!$vehiculo)
+        {
+            return response()->json(['mensaje' => 'Recurso no encontrado.', 'codigo' => 404], 404);
+        }
+        return response()->json(['datos' => $vehiculo->tracker()->get()], 200);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -30,22 +36,6 @@ class TrackerController extends Controller
     public function store(Request $request)
     {
         //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $tracker = Tracker::find($id);
-        if(!$tracker)
-        {
-            return response()->json(['mensaje' => 'Recurso no encontrado.', 'codigo' => 404], 404);
-        }
-        return response()->json(['datos' => $tracker], 200);
     }
 
     /**
