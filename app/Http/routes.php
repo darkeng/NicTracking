@@ -28,3 +28,9 @@ Route::resource('trackers', 'TrackerController',
 Route::resource('trackers.posiciones', 'TrackerPosicionController',
 	['except' => ['edit', 'create', 'update']]);
 
+Route::pattern('no_existe', '.*');
+Route::any('/{no_existe}', function ()
+	{
+		return response()->json(['mensaje' => 'Ruta o metodo no existe.', 'codigo' => 400], 400);
+	});
+
