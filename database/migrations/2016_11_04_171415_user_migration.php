@@ -18,7 +18,6 @@ class UserMigration extends Migration
             $table->string('apellido');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('foto');
             $table->string('direccion');
             $table->timestamps();
         });

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Tracker;
+use App\Posicion;
+
 class TrackerPosicionController extends Controller
 {
     /**
@@ -14,19 +17,14 @@ class TrackerPosicionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($idTrack)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $Track = Tracker::find($idTrack);
+        if(!$Track)
+        {
+            return response()->json(['error'=>array('mensaje' => 'No se encontro el rastreador.', 'codigo' => 404)], 404);
+        }
+        return response()->json(['datos' => $Track->posiciones()->get()], 200);
     }
 
     /**
@@ -35,9 +33,22 @@ class TrackerPosicionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $idTrack)
     {
-        //
+        $track = Tracker::find($idTrack);
+        if (!$track)
+        {
+            return response()->json(['error' => array('mensaje' => 'No se encontro el tracker.', 'codigo' => 404)], 404);
+        }
+        else if(!$request->input('lat') || !$request->input('lan') || !$request->input('fecha_registro'))
+            {
+                return response()->json(['error'=>array('mensaje' => 'Parametros incorrectos.', 'codigo' => 422)], 422);
+            }
+            else
+                {
+                    $track->posiciones()->create($request->all());
+                    return response()->json(['ok'=>array('mensaje' => 'Recurso guardado.', 'codigo' => 201)], 201);
+                }
     }
 
     /**

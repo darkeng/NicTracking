@@ -19,7 +19,6 @@ class UserSeeder extends Seeder
                 'apellido' => 'mejia',
                 'email' => 'engellmejia@hotmail.com',
                 'password' => Hash::make('123'),
-                'foto' => $faker->imageUrl(300, 320, 'people'),
                 'direccion' => $faker->address()
                 ]);
         /*

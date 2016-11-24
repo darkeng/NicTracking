@@ -26,5 +26,5 @@ Route::resource('trackers', 'TrackerController',
 	['only' => ['index', 'show']]);
 
 Route::resource('trackers.posiciones', 'TrackerPosicionController',
-	['except' => ['edit', 'create']]);
+	['except' => ['edit', 'create', 'update']]);
 
