@@ -15,9 +15,9 @@ class UserSeeder extends Seeder
     {
         $faker=Factory::create('es_ES');
         User::create([
-                'nombre' => 'engell',
+                'nombre' => 'alexis',
                 'apellido' => 'mejia',
-                'email' => 'engellmejia@hotmail.com',
+                'email' => 'fake@fake.com',
                 'password' => Hash::make('123'),
                 'direccion' => $faker->address()
                 ]);
