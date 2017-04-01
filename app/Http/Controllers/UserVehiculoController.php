@@ -90,51 +90,56 @@ class UserVehiculoController extends Controller
  
         if (!$user)
         {
-            return response()->json(['error'=>array(['codigo'=>404,'mensaje'=>'No se encuentra el usuario.'])],404);
+            return response()->json(['error'=>array(['mensaje'=>'No se encuentra el usuario.', 'codigo'=>404])],404);
         }       
  
         $vehiculo = $user->vehiculos()->find($idVe);
  
         if (!$vehiculo)
         {
-            return response()->json(['error'=>array(['codigo'=>404,'mensaje'=>'No se encuentra el vehiculo.'])],404);
+            return response()->json(['error'=>array(['mensaje'=>'No se encuentra el vehiculo.', 'codigo'=>404])],404);
         }   
  
-        $nombre=$request->input('nombre');
-        $apellido=$request->input('apellido');
-        $telefono=$request->input('telefono');
-        $direccion=$request->input('direccion');
- 
+        $tipo=$request->input('tipo');
+        $marca=$request->input('marca');
+        $modelo=$request->input('modelo');
+        $color=$request->input('color'); 
+        $matricula=$request->input('matricula');
+
         // Necesitamos detectar si estamos recibiendo una petición PUT o PATCH.
-        // El método de la petición se sabe a través de $request->method();
-        /*  nombre      apellido        telefono       direccion       Alcance */
+        /*  tipo      marca        modelo       color   matricula*/
         if ($request->method() === 'PATCH')
         {
             // Creamos una bandera para controlar si se ha modificado algún dato en el método PATCH.
             $bandera = false;
  
             // Actualización parcial de campos.
-            if ($nombre)
+            if ($tipo)
             {
-                $vehiculo->nombre = $nombre;
+                $vehiculo->tipo = $tipo;
                 $bandera=true;
             }
  
-            if ($apellido)
+            if ($marca)
             {
-                $vehiculo->apellido = $apellido;
+                $vehiculo->marca = $marca;
                 $bandera=true;
             }
  
-            if ($telefono)
+            if ($modelo)
             {
-                $vehiculo->telefono = $telefono;
+                $vehiculo->modelo = $modelo;
                 $bandera=true;
             }
  
-            if ($direccion)
+            if ($color)
             {
-                $vehiculo->direccion = $direccion;
+                $vehiculo->color = $color;
+                $bandera=true;
+            }
+            if ($matricula)
+            {
+                $vehiculo->matricula = $matricula;
                 $bandera=true;
             }
  
@@ -142,33 +147,34 @@ class UserVehiculoController extends Controller
             {
                 // Almacenamos en la base de datos el registro.
                 $vehiculo->save();
-                return response()->json(['status'=>'ok','data'=>$vehiculo], 200);
+                return response()->json(['ok'=>array('mensaje' => 'Vehiculo actualizado.', 'codigo' => 204)], 200);
             }
             else
             {
-                // Se devuelve un array errors con los errores encontrados y cabecera HTTP 304 Not Modified – [No Modificada] Usado cuando el cacheo de encabezados HTTP está activo
+                // Se devuelve un array error con los errores encontrados y cabecera HTTP 304 Not Modified – [No Modificada] Usado cuando el cacheo de encabezados HTTP está activo
                 // Este código 304 no devuelve ningún body, así que si quisiéramos que se mostrara el mensaje usaríamos un código 200 en su lugar.
-                return response()->json(['errors'=>array(['code'=>304,'message'=>'No se ha modificado ningún dato del vehiculo.'])],304);
+                return response()->json(['error'=>array(['message'=>'No se ha modificado ningún dato del vehiculo.', 'codigo'=>304])],200);
             }
  
         }
  
         // Si el método no es PATCH entonces es PUT y tendremos que actualizar todos los datos.
-        if (!$nombre || !$apellido || !$telefono || !$direccion)
+        if (!$tipo || !$marca || !$modelo || !$color || !$matricula)
         {
-            // Se devuelve un array errors con los errores encontrados y cabecera HTTP 422 Unprocessable Entity – [Entidad improcesable] Utilizada para errores de validación.
-            return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan valores para completar el proceso.'])],422);
+            // Se devuelve un array error con los errores encontrados y cabecera HTTP 422 Unprocessable Entity – [Entidad improcesable] Utilizada para errores de validación.
+            return response()->json(['error'=>array(['mensaje'=>'Faltan valores para completar el proceso.', 'codigo'=>422])],422);
         }
  
-        $vehiculo->nombre = $nombre;
-        $vehiculo->apellido = $apellido;
-        $vehiculo->telefono = $telefono;
-        $vehiculo->direccion = $direccion;
+        $vehiculo->tipo = $tipo;
+        $vehiculo->marca = $marca;
+        $vehiculo->modelo = $modelo;
+        $vehiculo->color = $color;
+        $vehiculo->matricula = $matricula;
  
         // Almacenamos en la base de datos el registro.
         $vehiculo->save();
  
-        return response()->json(['status'=>'ok','data'=>$vehiculo], 200);
+        return response()->json(['ok'=>array('mensaje' => 'Vehiculo actualizado.', 'codigo' => 204)], 200);
     }
 
     /**
@@ -177,8 +183,22 @@ class UserVehiculoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($idUser, $idVehiculo)
     {
-        //
+        $user=User::find($idUser);
+ 
+        if (!$user)
+        {
+            return response()->json(['error'=>array(['mensaje'=>'No se encuentra el usuario.', 'codigo'=>404,])],404);
+        }       
+ 
+        $vehiculo = $user->vehiculos()->find($idVehiculo);
+ 
+        if (!$vehiculo)
+        {
+            return response()->json(['error'=>array(['mensaje'=>'No se encuentra el vehiculo.', 'codigo'=>404])],404);
+        }
+        $vehiculo->delete();
+        return response()->json(['ok'=>array('mensaje' => 'Recurso borrado.', 'codigo' => 204)], 200);
     }
 }

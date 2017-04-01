@@ -63,17 +63,6 @@ class TrackerPosicionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -91,8 +80,22 @@ class TrackerPosicionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($idT, $idP)
     {
-        //
+        $tracker=Tracker::find($idT);
+ 
+        if (!$tracker)
+        {
+            return response()->json(['error'=>array(['mensaje'=>'No se encuentra el tracker.', 'codigo'=>404,])],404);
+        }
+ 
+        $posicion = $tracker->Posiciones()->find($idP);
+ 
+        if (!$posicion)
+        {
+            return response()->json(['error'=>array(['mensaje'=>'No se encuentra la Posicion.', 'codigo'=>404])],404);
+        }
+        $posicion->delete();
+        return response()->json(['ok'=>array('mensaje' => 'Recurso borrado.', 'codigo' => 204)], 200);
     }
 }

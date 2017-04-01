@@ -43,7 +43,7 @@ class TrackerController extends Controller
         $tracker = Tracker::find($id);
         if(!$tracker)
         {
-            return response()->json(['mensaje' => 'Recurso no encontrado.', 'codigo' => 404], 404);
+            return response()->json(['error'=>array('mensaje' => 'Tracker no encontrado.', 'codigo' => 404)], 404);
         }
         return response()->json(['datos' => $tracker], 200);
     }

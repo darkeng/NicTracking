@@ -44,7 +44,7 @@ class VehiculoController extends Controller
         $vehiculo = Vehiculo::find($id);
         if(!$vehiculo)
         {
-            return response()->json(['mensaje' => 'No se encontro el vehiculo.', 'codigo' => 404], 404);
+            return response()->json(['error'=>array('mensaje' => 'No se encontro el vehiculo.', 'codigo' => 404)], 404);
         }
         return response()->json(['datos' => $vehiculo], 200);
     }
