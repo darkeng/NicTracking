@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Vehiculo;
+use App\Tracker;
 
-class VehiculoController extends Controller
+class TrackerController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -19,9 +18,9 @@ class VehiculoController extends Controller
      */
     public function index()
     {
-        return response()->json(['datos' => Vehiculo::all()],200);
+        return response()->json(['datos' => Tracker::all()],200);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -41,12 +40,12 @@ class VehiculoController extends Controller
      */
     public function show($id)
     {
-        $vehiculo = Vehiculo::find($id);
-        if(!$vehiculo)
+        $tracker = Tracker::find($id);
+        if(!$tracker)
         {
-            return response()->json(['error'=>array('mensaje' => 'No se encontro el vehiculo.', 'codigo' => 404)], 404);
+            return response()->json(['error'=>array('mensaje' => 'Tracker no encontrado.', 'codigo' => 404)], 404);
         }
-        return response()->json(['datos' => $vehiculo], 200);
+        return response()->json(['datos' => $tracker], 200);
     }
 
     /**
