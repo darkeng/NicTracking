@@ -1,0 +1,20 @@
+{
+  "name": "nictracking",
+  "description": "Interfaz web para sistema de rastreo con arduino.",
+  "main": "",
+  "authors": [
+    "Engell Alexis Mejia Duron"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-material-design": "0.5.10"
+  }
+}
