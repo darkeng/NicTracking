@@ -17,14 +17,19 @@ class PosicionSeeder extends Seeder
     	$nTrackers=Tracker::all()->count();
         $faker=Factory::create('es_ES');
 
-        for($i=1; $i<=$nTrackers; $i++)
+        for($i=1; $i<$nTrackers; $i++)
         {
         	for($o=0; $o<50; $o++)
         	{
         		Posicion::create
         		([
-        			'lat' => $faker->latitude(-86, -85),
-        			'lan' => $faker->longitude(12, 13),
+                    'velocidad' => $faker->randomFloat(4, 0, 7),
+                    'precision' => $faker->randomDigit(),
+        			'lat' => $faker->latitude(-87, -83),
+                    'lon' => $faker->longitude(11, 14),
+                    'altitud' => $faker->randomNumber(3),
+                    'precisionAlt' => $faker->randomDigit(),
+        			'direccion' => $faker->randomFloat(0, 0, 360),
         			'fecha_registro' => date("Y-m-d H:i:s"),
         			'tracker_id' => $i
         		]);

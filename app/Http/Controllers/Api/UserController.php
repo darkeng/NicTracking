@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if(!$request->input('nombre') || !$request->input('apellido') || !$request->input('email') || !$request->input('password') || !$request->input('direccion'))
+        if(!$request->input('nombre') || !$request->input('email') || !$request->input('password'))
             {
                 return response()->json(['error'=>array('mensaje' => 'Parametros incorrectos.', 'codigo' => 422)], 422);
             }
@@ -73,10 +73,9 @@ class UserController extends Controller
         }
         
         $nombre=$request->input('nombre');
-        $apellido=$request->input('apellido');
         $email=$request->input('email');
-        $password=$request->input('password'); 
-        $direccion=$request->input('direccion');
+        $avatar=$request->input('avatar');
+        $password=$request->input('password');
 
         if ($request->method() === 'PATCH')
         {
@@ -87,27 +86,22 @@ class UserController extends Controller
                 $user->nombre = $nombre;
                 $bandera=true;
             }
- 
-            if ($apellido)
-            {
-                $user->apellido = $apellido;
-                $bandera=true;
-            }
- 
+  
             if ($email)
             {
                 $user->email = $email;
+                $bandera=true;
+            }
+
+            if ($avatar)
+            {
+                $user->avatar = $avatar;
                 $bandera=true;
             }
  
             if ($password)
             {
                 $user->password = $password;
-                $bandera=true;
-            }
-            if ($direccion)
-            {
-                $user->direccion = $direccion;
                 $bandera=true;
             }
  
@@ -123,16 +117,15 @@ class UserController extends Controller
  
         }
  
-        if (!$nombre || !$apellido || !$email || !$password || !$direccion)
+        if (!$nombre || !$email || !$password || !$avatar)
         {
             return response()->json(['error'=>array(['mensaje'=>'Faltan valores para completar el proceso.', 'codigo'=>422])],422);
         }
  
         $user->nombre = $nombre;
-        $user->apellido = $apellido;
         $user->email = $email;
+        $user->avatar = $avatar;
         $user->password = $password;
-        $user->direccion = $direccion;
  
         $user->save();
  

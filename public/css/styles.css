@@ -1,0 +1,15 @@
+.img-profile
+{
+    position: relative;
+    top: -5px;
+    float: left;
+    left: -5px;
+    height: 30px;
+    width: 30px;
+}
+#map{
+    position:relative;
+    width:100%;
+    height: calc(100% - 152px);
+    margin-top: 70px;
+}

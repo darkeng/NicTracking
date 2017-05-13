@@ -14,11 +14,11 @@ class UserMigration extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->string('apellido');
+            $table->string('name')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('direccion');
+            $table->string('avatar')->default('img/avatars/demo.jpg');
+            $table->rememberToken();
             $table->timestamps();
         });
     }

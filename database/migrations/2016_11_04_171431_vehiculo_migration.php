@@ -18,7 +18,7 @@ class VehiculoMigration extends Migration
             $table->string('marca');
             $table->string('modelo');
             $table->string('color');
-            $table->string('matricula');
+            $table->string('matricula')->unique();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');

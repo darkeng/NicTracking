@@ -14,8 +14,13 @@ class PosicionMigration extends Migration
     {
         Schema::create('posiciones', function (Blueprint $table) {
             $table->increments('id');
+            $table->double('velocidad');
+            $table->integer('precision');
             $table->double('lat');
-            $table->double('lan');
+            $table->double('lon');
+            $table->integer('altitud');
+            $table->integer('precisionAlt');
+            $table->double('direccion');
             $table->dateTime('fecha_registro');
             $table->integer('tracker_id')->unsigned();
             $table->timestamps();

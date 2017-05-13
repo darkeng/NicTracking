@@ -15,11 +15,10 @@ class UserSeeder extends Seeder
     {
         $faker=Factory::create('es_ES');
         User::create([
-                'nombre' => 'alexis',
-                'apellido' => 'mejia',
+                'name' => 'alexis93',
                 'email' => 'fake@fake.com',
                 'password' => Hash::make('123'),
-                'direccion' => $faker->address()
+                'avatar' => 'img/avatars/engell.jpg'
                 ]);
         /*
     	for($i=0; $i<3; $i++)
