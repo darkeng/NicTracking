@@ -43,3 +43,6 @@
     font-size: 14px;
     white-space: nowrap;
 }
+.navbar .navbar-nav > li.dropdown > a > p {
+    display: inline-block;
+}
