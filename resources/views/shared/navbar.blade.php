@@ -57,17 +57,19 @@
                             </a>
                         </li>
                         <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="material-icons">directions_car</i> Mis vehiculos <b class="caret"></b>
-                                </a>
-                                <ul class="dropdown-menu" id="listVehicles">
-                                    @foreach(Auth::user()->vehiculos()->get() as $vehiculo)
-                                    <li>
-                                        <a href="#" id="{{ 've-'.$vehiculo->id }}">{{ $vehiculo->marca.' '.$vehiculo->modelo }}</a>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            </li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">directions_car</i>
+                                <p>Mis vehiculos<b class="caret"></b>
+                                </p>
+                            </a>
+                            <ul class="dropdown-menu" id="listVehicles">
+                                @foreach(Auth::user()->vehiculos()->get() as $vehiculo)
+                                <li>
+                                    <a href="#" id="{{ 've-'.$vehiculo->id }}">{{ $vehiculo->marca.' '.$vehiculo->modelo }}</a>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="material-icons">notifications</i>

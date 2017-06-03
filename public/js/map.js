@@ -1,3 +1,6 @@
+// Assets directory
+var baseUrl = 'http://'+document.domain;
+
 // creating the view
 var view = new ol.View({
   center: ol.proj.fromLonLat([-86.877366, 12.434746]),
@@ -23,7 +26,7 @@ var styles = {
   }),
   'carMarker': new ol.style.Style({
     image: new ol.style.Icon({
-      src: 'http://nictracking.com/img/icons/car_marker.png',
+      src: baseUrl+'/img/icons/car_marker.png',
       anchor: [0.5, 1]
     })
   })
@@ -142,7 +145,7 @@ function flyTo(location, done) {
 function elastic(t) {
   return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1;
 }
-function elacticTo(location){
+function elasticTo(location){
   view.animate({
     center: location,
     duration: 2000,
@@ -186,9 +189,9 @@ function addPosition(position, heading, m, speed) {
 
   // FIXME use speed instead
   if (heading && speed) {
-    geoMarkerEl.src = 'http://nictracking.com/img/icons/marker_dir.png';
+    geoMarkerEl.src = baseUrl+'/img/icons/marker_dir.png';
   } else {
-    geoMarkerEl.src = 'http://nictracking.com/img/icons/marker.png';
+    geoMarkerEl.src = baseUrl+'/img/icons/marker.png';
   }
 }
 
@@ -219,6 +222,7 @@ function updateView() {
       geoMarker.setPosition(c);
     }
   }
+  map.render();
 }
 
 function updateMarkers(){
@@ -278,7 +282,7 @@ var veID, userID, cont=0; var vehiclesIdList=[]; var coords=[];
 function getPositionData() {
   if(trackSwitch){
     $.ajax({
-      url: 'http://nictracking.com/api/usuarios/'+userID+'/vehiculos/'+veID+'/tracker/posiciones?ultimos=1', 
+      url: baseUrl+'/api/usuarios/'+userID+'/vehiculos/'+veID+'/tracker/posiciones?ultimos=1', 
       success: function(data) {
         if(data.datos.length != 0)
           geolocate(data);
@@ -290,7 +294,7 @@ function getPositionData() {
   }else {    
     if(cont<vehiclesIdList.length) {
       $.ajax({
-        url: 'http://nictracking.com/api/usuarios/'+userID+'/vehiculos/'+vehiclesIdList[cont]+'/tracker/posiciones?ultimos=1', 
+        url: baseUrl+'/api/usuarios/'+userID+'/vehiculos/'+vehiclesIdList[cont]+'/tracker/posiciones?ultimos=1', 
         success: function(data) {
           if(data.datos.length != 0){
             var cor=[data.datos[0].lat, data.datos[0].lon]
@@ -312,7 +316,7 @@ function getPositionData() {
 
 function createElements(){
   $("#map").append("<div id='mapInfo'></div>");
-  $("#map").append("<img id='geolocation_marker' class='hidden' src='http://nictracking.com/img/icons/marker_dir.png' />");
+  $("#map").append("<img id='geolocation_marker' class='hidden' src='"+baseUrl+"/img/icons/marker_dir.png' />");
   geoMarkerEl=document.getElementById("geolocation_marker");
   geoMarker = new ol.Overlay({
     positioning: 'center-center',
@@ -322,36 +326,22 @@ function createElements(){
   map.addOverlay(geoMarker);
 }
 
-var trackSwitch=false;
-$( document ).ready(function() {
-  var updater;
-  createElements();
-  userID=$("#userID").text();
-
-  var vehiclesList=$("#listVehicles").find("a");
-  for(var i=0; i<vehiclesList.length; i++)
-  {
-    vehiclesIdList.push(vehiclesList[i].id.substring(3, vehiclesList[i].id.length));
+function vehiclesClick(el){
+  clearInterval(updater);
+  (trackSwitch)?$("#geolocation_marker").removeClass('hidden'):$("#geolocation_marker").addClass('hidden');
+  veID=el.id.substring(3, el.id.length);
+  $("#listVehicles").find("li").removeClass('active');
+  $("#"+el.id).parent().addClass('active');
+  if(!trackSwitch) {
+    var vFeat=$.grep(carMarkers, function(e){ return e.O.id == "vMarker-"+veID; });
+    var point=vFeat[0].getGeometry();
+    elasticTo(point.B);
   }
-  createMarkers();
-  
-  $("#listVehicles").find("a").click(function(event) {
-    clearInterval(updater);
-    (trackSwitch)?$("#geolocation_marker").removeClass('hidden'):$("#geolocation_marker").addClass('hidden');
-    veID=event.target.id.substring(3, event.target.id.length);    
-    $("#listVehicles").find("li").removeClass('active');
-    $("#"+event.target.id).parent().addClass('active');
-    if(!trackSwitch) {
-      var vFeat=$.grep(carMarkers, function(e){ return e.O.id == "vMarker-"+veID; });
-      var point=vFeat[0].getGeometry();
-      elacticTo(point.B);
-    }
-    updater=setInterval(getPositionData, 500);
-  });
-
-  $('#track-switch').change(function() {
-    if($("#listVehicles").find("li").hasClass('active')){
-      if(this.checked) {
+  updater=setInterval(getPositionData, 500);
+}
+function trackingChange(el){
+  if($("#listVehicles").find("li").hasClass('active')){
+      if(el.checked) {
         view.setZoom(19);
         $("#geolocation_marker").removeClass('hidden');
         trackSwitch = true;
@@ -362,12 +352,26 @@ $( document ).ready(function() {
         layerData.setVisible(true);
       }
     } else {
-      $(this).prop("checked", false);
+      $(el).prop("checked", false);
       swal("Selecciona un vehiculo", "Ve al menu MIS VEHICULOS y elige uno de tus vehiculos.");
     }
-    $('#track-switch').val(this.checked);
-  });  
+    $('#track-switch').val(el.checked);
+}
 
+var trackSwitch=false; var updater;
+$( document ).ready(function() {  
+  createElements();
+  userID=$("#userID").text();
+
+  var vehiclesList=$("#listVehicles").find("a");
+  for(var i=0; i<vehiclesList.length; i++)
+  {
+    vehiclesIdList.push(vehiclesList[i].id.substring(3, vehiclesList[i].id.length));
+  }
+  createMarkers();
+  $("#listVehicles").find("a").attr("onclick", "vehiclesClick(this)");
+  $("#track-switch").attr("onchange", "trackingChange(this)");
+  
   updater=setInterval(getPositionData, 500);
 
 });
