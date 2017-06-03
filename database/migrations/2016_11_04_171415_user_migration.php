@@ -16,6 +16,7 @@ class UserMigration extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('email')->unique();
+            $table->enum('type', ['admin', 'normal'])->default('normal');
             $table->string('password');
             $table->string('avatar')->default('img/avatars/demo.jpg');
             $table->rememberToken();

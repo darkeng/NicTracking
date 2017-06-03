@@ -11,7 +11,7 @@
 @section('content')
 <div class="content">
 <div class="container-fluid">
-	<div class="jumbotron" style="background-image: url({{ asset('img/banner.jpg') }}); background-size: 100%;">
+	<div class="jumbotron" style="background-image: url({{ asset('img/banner.jpg') }}); background-size: cover;">
 		<div class="row">
 			<div class="col-md-9">
 				<div style="background-color: rgba(0,0,0,.2);color: #eee;">
@@ -42,7 +42,7 @@
 				<div class="col-md-4">
 					<h5 class="card-title">Massimo Banzi - Fundador de Arduino</h4>
 					<hr>
-					Massimo Banzi ayudó a inventar el Arduino, un minúsculo microcontrolador de código abierto de fácil uso que inspiró a miles de personas en todo el mundo a hacer cosas impresionantes, desde juguetes hasta equipos de satelitales. Porque, como él dice: <h4 class="card-description"> "No necesitas el permiso de nadie para hacer algo grande".</h4>
+					Massimo Banzi ayudó a inventar el Arduino, un minúsculo microcontrolador de código abierto de fácil uso que inspiró a miles de personas en todo el mundo a hacer cosas impresionantes, desde juguetes hasta equipos satelitales. Porque, como él dice: <h4 class="card-description"> "No necesitas el permiso de nadie para hacer algo grande".</h4>
 				</div>
 			</div>
 		</div>
@@ -58,7 +58,7 @@
 	            <div class="card-content">
 	                <div class="row">
 	                    <div class="col-md-2">
-	                        <ul class="nav nav-pills nav-pills-icons nav-stacked" role="tablist">
+	                        <ul class="nav nav-pills nav-pills-icons" role="tablist">
 	                            <li class="active">
 	                                <a href="#arduino-tab" role="tab" data-toggle="tab">
 	                                    <i><img src="{{ asset('img/arduino-icon.png') }}"></i> Arduino

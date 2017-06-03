@@ -15,11 +15,20 @@ class UserSeeder extends Seeder
     {
         $faker=Factory::create('es_ES');
         User::create([
-                'name' => 'alexis93',
-                'email' => 'fake@fake.com',
-                'password' => Hash::make('123'),
-                'avatar' => 'img/avatars/engell.jpg'
-                ]);
+            'name' => 'Engell93',
+            'email' => 'engell@admin.com',
+            'type' => 'admin',
+            'password' => Hash::make('123'),
+            'avatar' => 'img/avatars/engell.jpg'
+        ]);
+
+        User::create([
+            'name' => 'MarioBros',
+            'email' => 'mario@normal.com',
+            'type' => 'normal',
+            'password' => Hash::make('321'),
+            'avatar' => 'img/avatars/mario.jpg'
+        ]);
         /*
     	for($i=0; $i<3; $i++)
     	{

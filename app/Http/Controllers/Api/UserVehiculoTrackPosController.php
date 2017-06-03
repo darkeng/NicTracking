@@ -8,6 +8,7 @@ use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Posicion;
 
 class UserVehiculoTrackPosController extends Controller
 {
@@ -34,9 +35,10 @@ class UserVehiculoTrackPosController extends Controller
         {
             return response()->json(['error'=>array('mensaje' => 'El vehiculo no posee un tracker.', 'codigo' => 404)], 404);
         }
+
         if($request->has('ultimos') && is_numeric($request->input('ultimos')))
         {
-            return response()->json(['datos' => $Track->posiciones()->orderBy('fecha_registro', 'desc')->limit($request->input('ultimos'))->get()], 200);
+            return response()->json(['datos' => Posicion::getUlt($Track->id, $request->input('ultimos'))], 200);
         }
         if($request->has('desde') && $request->has('hasta'))
         {
@@ -50,11 +52,11 @@ class UserVehiculoTrackPosController extends Controller
             }
             else
             {
-            return response()->json(['datos' => $Track->posiciones()->whereBetween('fecha_registro', [$request->input('desde'), $request->input('hasta')])->get()], 200);
+            return response()->json(['datos' => Posicion::getBetw($Track->id, $request->input('desde'), $request->input('hasta'))], 200);
             }
         }
 
-        return response()->json(['datos' => $Track->posiciones()->get()], 200);
+        return response()->json(['datos' => Posicion::getOll($Track->id)], 200);
     }
 
     /**

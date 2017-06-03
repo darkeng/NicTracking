@@ -74,6 +74,7 @@ class UserController extends Controller
         
         $nombre=$request->input('nombre');
         $email=$request->input('email');
+        $type=$request->input('type');
         $avatar=$request->input('avatar');
         $password=$request->input('password');
 
@@ -90,6 +91,12 @@ class UserController extends Controller
             if ($email)
             {
                 $user->email = $email;
+                $bandera=true;
+            }
+
+            if ($type)
+            {
+                $user->type = $type;
                 $bandera=true;
             }
 
@@ -117,13 +124,14 @@ class UserController extends Controller
  
         }
  
-        if (!$nombre || !$email || !$password || !$avatar)
+        if (!$nombre || !$email || !$password || !$avatar || !$type)
         {
             return response()->json(['error'=>array(['mensaje'=>'Faltan valores para completar el proceso.', 'codigo'=>422])],422);
         }
  
         $user->nombre = $nombre;
         $user->email = $email;
+        $user->type = $type;
         $user->avatar = $avatar;
         $user->password = $password;
  

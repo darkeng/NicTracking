@@ -47,8 +47,51 @@
                             </ul>
                         </li>
                     @endif
-                    <li class="separator hidden-lg hidden-md"></li>
                 @endif
+                @if(Auth::check())
+                    <li class="hidden" id="userID">{{Auth::user()->id}}</li>
+                    @if(Request::is('tracking-panel/map'))
+                        <li>
+                            <a class="togglebutton">
+                                <label><input type="checkbox" id="track-switch">Seguimiento</label>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">directions_car</i> Mis vehiculos <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu" id="listVehicles">
+                                    @foreach(Auth::user()->vehiculos()->get() as $vehiculo)
+                                    <li>
+                                        <a href="#" id="{{ 've-'.$vehiculo->id }}">{{ $vehiculo->marca.' '.$vehiculo->modelo }}</a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">notifications</i>
+                                <span class="notification">3</span>
+                                <p class="hidden-lg hidden-md">
+                                    Notificaciones
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Tu vehiculo perdido ha sido encontrado</a>
+                                </li>
+                                <li>
+                                    <a href="#">Uno de tus vehiculos ha salido del area permitida.</a>
+                                </li>
+                                <li>
+                                    <a href="#">Uno de tus vehiculos lleva mas de 5 dias sin reportar su ubicacion.</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                @endif
+                <li class="separator hidden-lg hidden-md"></li>
             </ul>
         </div>
     </div>

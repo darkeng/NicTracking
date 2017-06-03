@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class PosicionMigration extends Migration
 {
@@ -26,6 +27,7 @@ class PosicionMigration extends Migration
             $table->timestamps();
             $table->foreign('tracker_id')->references('id')->on('trackers');
         });
+        DB::statement("ALTER TABLE posiciones MODIFY fecha_registro DATETIME(3) NOT NULL");
     }
 
     /**

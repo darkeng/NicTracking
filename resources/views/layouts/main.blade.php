@@ -7,8 +7,8 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/bootstrap.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/material-helper.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/font-awesome.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/flag-icon.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="https://openlayers.org/en/v4.1.1/css/ol.css">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/sweetalert.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/ol.css') }}">
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
   <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
 
@@ -22,7 +22,7 @@
 
     @yield('footer')
     
-  <script src="{{ asset('js/plugins/jquery-3.1.1.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('js/plugins/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/bootstrap.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/material.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/perfect-scrollbar.jquery.min.js') }}" type="text/javascript"></script>
@@ -31,15 +31,13 @@
 
   <script src="{{ asset('js/plugins/moment.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/chartist.min.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('js/plugins/bootstrap-notify.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('js/plugins/bootstrap-notify.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('js/plugins/nouislider.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/jquery.datatables.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('js/plugins/sweetalert2.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('js/plugins/sweetalert.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/jasny-bootstrap.min.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('js/plugins/jquery.tagsinput.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/material-helper.js') }}" type="text/javascript"></script>
-  <script src="https://openlayers.org/en/v4.1.1/build/ol.js" type="text/javascript"></script>
+  <script src="{{ asset('js/plugins/ol.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
   
   @yield('pagescript')

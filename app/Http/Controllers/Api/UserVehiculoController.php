@@ -105,9 +105,10 @@ class UserVehiculoController extends Controller
         $modelo=$request->input('modelo');
         $color=$request->input('color'); 
         $matricula=$request->input('matricula');
+        $perdido=$request->input('perdido');
 
         // Necesitamos detectar si estamos recibiendo una petición PUT o PATCH.
-        /*  tipo      marca        modelo       color   matricula*/
+        /*  tipo      marca        modelo       color   matricula   perdido*/
         if ($request->method() === 'PATCH')
         {
             // Creamos una bandera para controlar si se ha modificado algún dato en el método PATCH.
@@ -137,9 +138,16 @@ class UserVehiculoController extends Controller
                 $vehiculo->color = $color;
                 $bandera=true;
             }
+
             if ($matricula)
             {
                 $vehiculo->matricula = $matricula;
+                $bandera=true;
+            }
+
+            if ($perdido)
+            {
+                $vehiculo->perdido = $perdido;
                 $bandera=true;
             }
  
@@ -159,7 +167,7 @@ class UserVehiculoController extends Controller
         }
  
         // Si el método no es PATCH entonces es PUT y tendremos que actualizar todos los datos.
-        if (!$tipo || !$marca || !$modelo || !$color || !$matricula)
+        if (!$tipo || !$marca || !$modelo || !$color || !$matricula || !$perdido)
         {
             // Se devuelve un array error con los errores encontrados y cabecera HTTP 422 Unprocessable Entity – [Entidad improcesable] Utilizada para errores de validación.
             return response()->json(['error'=>array(['mensaje'=>'Faltan valores para completar el proceso.', 'codigo'=>422])],422);
@@ -170,6 +178,7 @@ class UserVehiculoController extends Controller
         $vehiculo->modelo = $modelo;
         $vehiculo->color = $color;
         $vehiculo->matricula = $matricula;
+        $vehiculo->perdido = $perdido;
  
         // Almacenamos en la base de datos el registro.
         $vehiculo->save();
