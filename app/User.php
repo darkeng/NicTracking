@@ -17,7 +17,7 @@ class User extends Model implements AuthenticatableContract,
     use Authenticatable, Authorizable, CanResetPassword;
 
     protected $table='users';
-    protected $fillable = array('name', 'email', 'avatar', 'password');
+    protected $fillable = array('name', 'email', 'type', 'avatar', 'password');
 
     protected $hidden = array('password','remember_token', 'created_at', 'updated_at');
 

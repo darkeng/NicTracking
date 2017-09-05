@@ -17,8 +17,8 @@ function showForm(el, opt){
 		else if(index==6) {
 			var select =$(el).hasClass('text-danger') ? ['','selected'] : ['selected',''];
 			$(el).html("<select name='perdido' class='form-control'>"+
-          "<option value='false' "+select[0]+">Normal</option>"+
-          "<option value='1' "+select[1]+">Perdido</option></select>");
+          "<option value='N' "+select[0]+">No</option>"+
+          "<option value='S' "+select[1]+">Si</option></select>");
 		}
 		else if(index==7){
 			$(el).html("<button style='right: 3px;' type='button' rel='tooltip' class='btn btn-info' title='Guardar' onclick='vSave(this)'>"+
@@ -90,10 +90,10 @@ function reloadTr(el, data){
 		}
 		if(index==6){
 			var res=$.grep(data, function(a){ return a.name == 'perdido'; });
-			if(res[0].value=='1'){
-				$(e).addClass('text-danger').text('Perdido');
+			if(res[0].value=='S'){
+				$(e).addClass('text-danger').text('Si');
 			}else {
-				$(e).removeClass('text-danger').text('Normal');
+				$(e).removeClass('text-danger').text('No');
 			}
 		}
 	});

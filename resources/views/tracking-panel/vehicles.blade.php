@@ -34,7 +34,7 @@
                                             <th>Modelo</th>
                                             <th>Color</th>
                                             <th>Matricula</th>
-                                            <th>Estado</th>
+                                            <th>Perdido</th>
                                             <th class="text-center">Acciones</th>
                                         </tr>
                                     </thead>
@@ -47,10 +47,10 @@
     			                        	<td class="modelo">{{ $vehiculo->modelo }}</td>
     			                        	<td class="color">{{ $vehiculo->color }}</td>
     			                        	<td class="matricula">{{ $vehiculo->matricula }}</td>
-    			                        	@if($vehiculo->perdido)
-    											<td class="perdido text-danger">Perdido</td>
+    			                        	@if($vehiculo->perdido=="S")
+    											<td class="perdido text-danger">Si</td>
     			                        	@else
-    											<td class="perdido">Normal</td>
+    											<td class="perdido">No</td>
     			                        	@endif
     			                        	<td class="td-actions text-center">
                                                 <button type="button" rel="tooltip" class="btn btn-success" title="Editar" onclick="showForm(this, 'edit')">
@@ -94,7 +94,7 @@
                     <td class="modelo"></td>
                     <td class="color"></td>
                     <td class="matricula"></td>
-                    <td class="perdido">Normal</td>
+                    <td class="perdido">No</td>
                     <td class="td-actions text-center">
                         <button type="button" rel="tooltip" class="btn btn-success" title="Editar" onclick="showForm(this, 'edit')">
                             <i class="material-icons">edit</i>

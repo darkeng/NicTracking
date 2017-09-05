@@ -18,12 +18,12 @@ class VehiculoSeeder extends Seeder
     	$tipo = array('motocicleta','camion pesado','camion','camioneta','bus', 'van', 'auto cerrado');
         $marca= array('Toyota', 'Honda', 'Mazda', 'Chevrolet', 'Volkswagen', 'Hyundai', 'Nissan', 'Ford', 'Suzuki', 'Mercedes Benz');
 
-        $perdido=1;
+        $perdido='S';
         $faker=Factory::create('es_ES');
         for($i=0; $i<10; $i++)
         {
-            if($perdido==1) {$perdido=0;}
-            else {$perdido=1;}
+            if($perdido=='N') {$perdido='S';}
+            else {$perdido='N';}
 
         	Vehiculo::create
         	([
