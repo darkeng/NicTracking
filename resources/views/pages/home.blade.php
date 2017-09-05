@@ -20,11 +20,12 @@
 				  
 				</div>
 				<p>
-			  <a class="btn btn-primary btn-lg" href="/tracking-panel/general" role="button">
 			  @if(Auth::check())
+			  		<a class="btn btn-primary btn-lg" href="/tracking-panel/general" role="button">
 			  		Ir al administrador
               @else
-                    Ver la demo
+			  		<a class="btn btn-primary btn-lg" href="/auth/register" role="button">
+                    Registrate ahora
               @endif
 			  </a>
 			  </p>

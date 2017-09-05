@@ -13,10 +13,10 @@ use App\Vehiculo;
 class UserVehiculoController extends Controller
 {
 
-    public function __construct()
+    /*public function __construct()
     {
         $this->middleware('auth.basic.once', ['only' => ['store', 'update', 'destroy']]);
-    }
+    }*/
     /**
      * Display a listing of the resource.
      *
@@ -52,8 +52,8 @@ class UserVehiculoController extends Controller
             }
             else
                 {
-                    $user->vehiculos()->create($request->all());
-                    return response()->json(['ok'=>array('mensaje' => 'Recurso guardado.', 'codigo' => 201)], 201);
+                    $userRet=$user->vehiculos()->create($request->all());
+                    return response()->json(['ok'=>array('mensaje' => 'Recurso guardado.', 'id' => $userRet->id, 'codigo' => 201)], 201);
                 }
     }
 

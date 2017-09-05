@@ -15,7 +15,7 @@
 
 @section('content')
 			
-	<div id="map">
+	<div id="map" class="map-principal">
     	
     </div>
     

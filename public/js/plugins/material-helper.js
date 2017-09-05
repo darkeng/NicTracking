@@ -38,7 +38,7 @@ $(document).ready(function(){
     // We put modals out of wrapper to working properly
     $('.modal').appendTo("body");
 
-    md.initSidebarsCheck();
+    helper.initSidebarsCheck();
     $page = $('.full-page');
     image_src = $page.data('image');
 
@@ -48,15 +48,15 @@ $(document).ready(function(){
     }
 
     if($('body').hasClass('sidebar-mini')){
-        md.misc.sidebar_mini_active = true;
+        helper.misc.sidebar_mini_active = true;
     }
 
     window_width = $(window).width();
 
     // check if there is an image set for the sidebar's background
-    md.checkSidebarImage();
+    helper.checkSidebarImage();
 
-    md.initMinimizeSidebar();
+    helper.initMinimizeSidebar();
 
     //    Activate bootstrap-select
     if($(".selectpicker").length != 0){
@@ -112,14 +112,14 @@ $(document).ready(function(){
 
 // activate collapse right menu when the windows is resized
 $(window).resize(function(){
-    md.initSidebarsCheck();
+    helper.initSidebarsCheck();
 
     // reset the seq for charts drawing animations
     seq = seq2 = 0;
 
 });
 
-md = {
+helper = {
     misc:{
         navbar_menu_visible: 0,
         active_collapse: true,
@@ -160,10 +160,10 @@ md = {
     initSidebarsCheck: function(){
         if($(window).width() <= 991){
             if($sidebar.length != 0){
-                md.initRightMenu();
+                helper.initRightMenu();
 
             } else {
-                md.initBootstrapNavbarMenu();
+                helper.initBootstrapNavbarMenu();
             }
         }
 
@@ -173,7 +173,7 @@ md = {
 
         // when we are on a Desktop Screen and the collapse is triggered we check if the sidebar mini is active or not. If it is active then we don't let the collapse to show the elements because the elements from the collapse are showing on the hover state over the icons in sidebar mini, not on the click.
         $('.sidebar .collapse').on('show.bs.collapse',function(){
-            if($(window).width() > 991 && md.misc.sidebar_mini_active == true){
+            if($(window).width() > 991 && helper.misc.sidebar_mini_active == true){
                 return false;
             } else{
                 return true;
@@ -183,9 +183,9 @@ md = {
         $('#minimizeSidebar').click(function(){
             var $btn = $(this);
 
-            if(md.misc.sidebar_mini_active == true){
+            if(helper.misc.sidebar_mini_active == true){
                 $('body').removeClass('sidebar-mini');
-                md.misc.sidebar_mini_active = false;
+                helper.misc.sidebar_mini_active = false;
 
                 if(isWindows){
                     $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
@@ -205,7 +205,7 @@ md = {
                     $('body').addClass('sidebar-mini');
 
                     $('.sidebar .collapse').css('height','auto');
-                    md.misc.sidebar_mini_active = true;
+                    helper.misc.sidebar_mini_active = true;
                 },300);
             }
 

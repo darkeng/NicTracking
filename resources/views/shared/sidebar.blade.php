@@ -12,19 +12,11 @@
     <div class="sidebar-wrapper">
         <div class="user">
             <div class="photo">
-                @if(Auth::check())
-                    <img src="{{ asset(Auth::user()->avatar) }}" />
-                @else
-                    <img src="{{ asset('img/avatars/demo.jpg') }}" />
-                @endif
+                <img src="{{ asset(Auth::user()->avatar) }}" />
             </div>
             <div class="info">
                 <a data-toggle="collapse" href="#collapseExample" class="collapsed">
-                    @if(Auth::check())
-                        {{ Auth::user()->name }}
-                    @else
-                        DEMO
-                    @endif
+                    {{ Auth::user()->name }}
                     <b class="caret"></b>
                 </a>
                 <div class="collapse" id="collapseExample">

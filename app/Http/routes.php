@@ -16,7 +16,7 @@ Route::get('/', function()
 {
 	return view('pages.home');
 });
-Route::group(['prefix' => 'tracking-panel'], function()
+Route::group(['middleware' => 'auth', 'prefix' => 'tracking-panel'], function()
 {
 	Route::get('general', function()
 	{

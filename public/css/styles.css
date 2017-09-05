@@ -7,7 +7,7 @@
     height: 30px;
     width: 30px;
 }
-#map{
+.map-principal {
     position:relative;
     width:100%;
     height: calc(100% - 152px);
@@ -18,6 +18,14 @@
     bottom: 5px;
     left: 5px;
     font-size: 0.8em;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 4px;
+    z-index: 100;
+}
+#carList {
+    position: absolute;
+    top: 35px;
+    right: 25px;
     background-color: rgba(255, 255, 255, 0.7);
     padding: 4px;
     z-index: 100;
@@ -45,4 +53,7 @@
 }
 .navbar .navbar-nav > li.dropdown > a > p {
     display: inline-block;
+}
+.popover-content {
+    min-width: 180px;
 }

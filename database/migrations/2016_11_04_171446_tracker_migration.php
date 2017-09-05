@@ -19,7 +19,7 @@ class TrackerMigration extends Migration
             $table->string('descripcion');
             $table->integer('vehiculo_id')->unsigned();
             $table->timestamps();
-            $table->foreign('vehiculo_id')->references('id')->on('vehiculos');
+            $table->foreign('vehiculo_id')->references('id')->on('vehiculos')->onDelete('cascade');
         });
     }
 

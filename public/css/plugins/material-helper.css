@@ -10883,7 +10883,18 @@ footer .btn {
   .nav-mobile-menu .dropdown .dropdown-menu {
     display: none;
   }
+  .nav.nav-mobile-menu li a, .nav.nav-mobile-menu li a:hover {
+    color: #FFFFFF;
+  }
   .nav-mobile-menu .dropdown.open .dropdown-menu {
+    position: static;
+    float: none;
+    width: auto;
+    margin-top: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
     display: block;
   }
   .nav-mobile-menu li.active > a {
@@ -10927,6 +10938,11 @@ footer .btn {
     float: left;
     line-height: 30px;
     margin-right: 8px;
+  }
+  .nav.nav-mobile-menu .notification {
+    float: left;
+    margin-right: 8px;
+    line-height: 30px;
   }
   .sidebar .nav-mobile-menu .open .dropdown-menu {
     position: static;

@@ -25,7 +25,7 @@ class PosicionMigration extends Migration
             $table->dateTime('fecha_registro');
             $table->integer('tracker_id')->unsigned();
             $table->timestamps();
-            $table->foreign('tracker_id')->references('id')->on('trackers');
+            $table->foreign('tracker_id')->references('id')->on('trackers')->onDelete('cascade');
         });
         DB::statement("ALTER TABLE posiciones MODIFY fecha_registro DATETIME(3) NOT NULL");
     }

@@ -38,7 +38,6 @@
   <script src="{{ asset('js/plugins/jasny-bootstrap.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/material-helper.js') }}" type="text/javascript"></script>
   <script src="{{ asset('js/plugins/ol.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
   
   @yield('pagescript')
 </body>

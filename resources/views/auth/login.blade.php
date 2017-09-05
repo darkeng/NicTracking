@@ -62,3 +62,13 @@
         </div>
     </div>
 @endsection
+
+@section('pagescript')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.card').removeClass('card-hidden');
+            }, 700);
+        });
+    </script>
+@endsection

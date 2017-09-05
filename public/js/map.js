@@ -48,7 +48,7 @@ var map = new ol.Map({
     layerOSM,
     layerData
   ],
-  target: 'map',
+  target: document.getElementById('map'),
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
@@ -61,14 +61,13 @@ var map = new ol.Map({
 //car markers sources list
 var carMarkers = [];
 
-// Geolocation marker
-var geoMarker, geoMarkerEl;
+// Geolocation marker and popup
+var geoMarker, carPopup;
 
 // LineString to store the different geolocation positions. This LineString
 // is time aware.
 // The Z dimension is actually used to store the rotation (heading).
-var positions = new ol.geom.LineString([],
-    /** @type {ol.geom.GeometryLayout} */ ('XYZM'));
+var positions = new ol.geom.LineString([], ('XYZM'));
 
 // Geolocation Control
 var geolocation = new ol.Geolocation(/** @type {olx.GeolocationOptions} */ ({
@@ -81,6 +80,47 @@ var geolocation = new ol.Geolocation(/** @type {olx.GeolocationOptions} */ ({
 }));
 
 var deltaMean = 500; // the geolocation sampling period mean in ms
+
+// display popup on click
+map.on('click', function(evt) {
+  var feature = map.forEachFeatureAtPixel(evt.pixel,
+      function(feature) {
+        return feature;
+      });
+  var element=carPopup.getElement();
+  $(element).popover('destroy');
+  if(feature && feature.get('type')=='carMarker') {
+    var coordinates = feature.getGeometry().getCoordinates();
+
+    var html = '<h5>'+feature.get('marca')+' '+feature.get('modelo')+'</h5>'+
+            '<p class="text-muted">'+'Color: ' + feature.get('color')+'<br />'+
+            'Matricula: ' + feature.get('matricula')+'<br /></p>'+
+            '<small>Actualizado '+moment(feature.get('fecha'), "YYYY-MM-DD hh:mm:ss.SSS").fromNow();+'</small>';
+
+    carPopup.setPosition(coordinates);
+    $(element).popover({
+      'placement': 'top',
+      'animation': false,
+      'html': true,
+      'content': html
+    });
+    $(element).popover('show');
+  } else {
+    $(element).popover('destroy');
+  }
+});
+
+// change mouse cursor when over marker
+map.on('pointermove', function(e) {
+  if (e.dragging) {
+    $(carPopup.getElement()).popover('destroy');
+    return;
+  }
+  var pixel = map.getEventPixel(e.originalEvent);
+  var hit = map.hasFeatureAtPixel(pixel);
+  var tar=map.getTarget();
+  map.getTarget().style.cursor = hit ? 'pointer' : '';
+});
 
 // Listen to position changes
 geolocation.on('change', function() {
@@ -131,7 +171,7 @@ function flyTo(location, done) {
     }
   }
   view.animate({
-    center: location,
+    center: getCenterWithHeading(location, view.getRotation(), view.getResolution()),
     duration: duration
   }, callback);
   view.animate({
@@ -189,9 +229,9 @@ function addPosition(position, heading, m, speed) {
 
   // FIXME use speed instead
   if (heading && speed) {
-    geoMarkerEl.src = baseUrl+'/img/icons/marker_dir.png';
+    geoMarker.getElement().src = baseUrl+'/img/icons/marker_dir.png';
   } else {
-    geoMarkerEl.src = baseUrl+'/img/icons/marker.png';
+    geoMarker.getElement().src = baseUrl+'/img/icons/marker.png';
   }
 }
 
@@ -225,22 +265,11 @@ function updateView() {
   map.render();
 }
 
-function updateMarkers(){
-  for(var i=0; i<vehiclesIdList.length; i++){
-    carMarkers[i].setGeometry(new ol.geom.Point(coords[i]));
-  }
-  map.render();
-}
-
-function createMarkers(){
-  for(var i=0; i<vehiclesIdList.length; i++){
-    carMarkers.push( new ol.Feature({
-      type: 'carMarker',
-      geometry: new ol.geom.Point([-86.879089, 12.438570]),
-      id: 'vMarker-'+vehiclesIdList[i]
-    }));
-  }
-  layerData.getSource().addFeatures(carMarkers);
+function restartGeo(){
+  init=true;
+  previousM=0;
+  positions= new ol.geom.LineString([], ('XYZM'));
+  updater=setInterval(getPositionData, 500);
 }
 
 function positionChange(position) {
@@ -275,7 +304,19 @@ function geolocate(data) {
   }
   map.on('postcompose', updateView);
   map.render();
+}
 
+var vehiclesData=[];
+function getVehicles(){
+  $.ajax({
+    url: baseUrl+'/api/usuarios/'+userID+'/vehiculos', 
+    success: function(data) {
+      vehiclesData=data.datos;
+    },
+    error: function(e) {
+      console.log('Error: '+e.status);
+    }
+  });
 }
 
 var veID, userID, cont=0; var vehiclesIdList=[]; var coords=[];
@@ -288,7 +329,7 @@ function getPositionData() {
           geolocate(data);
       },
       error: function(e) {
-        console.log('Error: '+e.responseText);
+        console.log('Error: '+e.status);
       }
     });
   }else {    
@@ -297,13 +338,16 @@ function getPositionData() {
         url: baseUrl+'/api/usuarios/'+userID+'/vehiculos/'+vehiclesIdList[cont]+'/tracker/posiciones?ultimos=1', 
         success: function(data) {
           if(data.datos.length != 0){
-            var cor=[data.datos[0].lat, data.datos[0].lon]
-            coords.push(ol.proj.transform(cor, 'EPSG:4326', 'EPSG:3857'));
+            var cor=[data.datos[0].lat, data.datos[0].lon];
+            coords.push({
+              'point': ol.proj.transform(cor, 'EPSG:4326', 'EPSG:3857'),
+              'date': data.datos[0].fecha_registro
+          });
           }
           cont++;
         },
         error: function(e) {
-          console.log('Error: '+e.responseText);
+          console.log('Error: '+e.status);
         }
       });
     }else {
@@ -314,40 +358,88 @@ function getPositionData() {
   }
 }
 
+function updateMarkers(){
+  for(var i=0; i<vehiclesIdList.length; i++){
+    carMarkers[i].setGeometry(new ol.geom.Point(coords[i].point));
+    carMarkers[i].set('fecha', coords[i].date);
+  }
+  map.render();
+}
+
+function createMarkers(){
+  var lis=$(".listVehicles").find("li");
+  for(var i=0; i<lis.length; i++){
+    var id=$(lis[i]).data('vehicle').id;
+    carMarkers.push( new ol.Feature({
+      type: 'carMarker',
+      geometry: undefined,
+      id: 'vMarker-'+id,
+      tipo:$(lis[i]).data('vehicle').tipo,
+      marca:$(lis[i]).data('vehicle').marca,
+      modelo:$(lis[i]).data('vehicle').modelo,
+      color:$(lis[i]).data('vehicle').color,
+      matricula:$(lis[i]).data('vehicle').matricula
+    }));
+    vehiclesIdList.push(id);
+  }
+  layerData.getSource().addFeatures(carMarkers);
+}
+
 function createElements(){
   $("#map").append("<div id='mapInfo'></div>");
+  $("#map").append("<div id='carPopup'></div>");
   $("#map").append("<img id='geolocation_marker' class='hidden' src='"+baseUrl+"/img/icons/marker_dir.png' />");
-  geoMarkerEl=document.getElementById("geolocation_marker");
+  
   geoMarker = new ol.Overlay({
     positioning: 'center-center',
-    element: geoMarkerEl,
+    element: document.getElementById("geolocation_marker"),
     stopEvent: false
   });
+  carPopup = new ol.Overlay({
+    element: document.getElementById('carPopup'),
+    positioning: 'bottom-center',
+    stopEvent: false,
+    offset: [0, -50]
+  });
+  map.addOverlay(carPopup);
   map.addOverlay(geoMarker);
 }
 
 function vehiclesClick(el){
   clearInterval(updater);
-  (trackSwitch)?$("#geolocation_marker").removeClass('hidden'):$("#geolocation_marker").addClass('hidden');
-  veID=el.id.substring(3, el.id.length);
-  $("#listVehicles").find("li").removeClass('active');
-  $("#"+el.id).parent().addClass('active');
-  if(!trackSwitch) {
-    var vFeat=$.grep(carMarkers, function(e){ return e.O.id == "vMarker-"+veID; });
-    var point=vFeat[0].getGeometry();
-    elasticTo(point.B);
+  veID=$(el).parent().data('vehicle').id;
+  $(".listVehicles").find("li").removeClass('active');
+  $(el).parent().addClass('active');
+  var vFeat=$.grep(carMarkers, function(e){ return e.get('id') == "vMarker-"+veID; });
+  var point=vFeat[0].getGeometry().getCoordinates();
+  if(trackSwitch) {
+    trackSwitch=false;
+    $("#geolocation_marker").addClass('hidden');
+    flyTo(point, function(){
+      restartGeo();
+      trackSwitch=true;
+      $("#geolocation_marker").removeClass('hidden');
+    });
+  }else {
+    elasticTo(point);
+    updater=setInterval(getPositionData, 500);
   }
-  updater=setInterval(getPositionData, 500);
 }
+var antzoom=view.getZoom();
 function trackingChange(el){
-  if($("#listVehicles").find("li").hasClass('active')){
+  if($(".listVehicles").find("li").hasClass('active')){
       if(el.checked) {
+        antzoom=view.getZoom();
         view.setZoom(19);
         $("#geolocation_marker").removeClass('hidden');
+        $('#mapInfo').removeClass('hidden');
         trackSwitch = true;
         layerData.setVisible(false);
       } else {
+        view.setZoom(antzoom);
         $("#geolocation_marker").addClass('hidden');
+        $('#mapInfo').addClass('hidden');
+        view.setRotation(0);
         trackSwitch=false;
         layerData.setVisible(true);
       }
@@ -355,22 +447,17 @@ function trackingChange(el){
       $(el).prop("checked", false);
       swal("Selecciona un vehiculo", "Ve al menu MIS VEHICULOS y elige uno de tus vehiculos.");
     }
-    $('#track-switch').val(el.checked);
+    $('.track-switch').val(el.checked);
 }
 
 var trackSwitch=false; var updater;
-$( document ).ready(function() {  
-  createElements();
+$( document ).ready(function() {
+  moment.locale('es');
   userID=$("#userID").text();
-
-  var vehiclesList=$("#listVehicles").find("a");
-  for(var i=0; i<vehiclesList.length; i++)
-  {
-    vehiclesIdList.push(vehiclesList[i].id.substring(3, vehiclesList[i].id.length));
-  }
+  createElements();
   createMarkers();
-  $("#listVehicles").find("a").attr("onclick", "vehiclesClick(this)");
-  $("#track-switch").attr("onchange", "trackingChange(this)");
+  $(".listVehicles").find("a").attr("onclick", "vehiclesClick(this)");
+  $(".track-switch").attr("onchange", "trackingChange(this)");
   
   updater=setInterval(getPositionData, 500);
 
