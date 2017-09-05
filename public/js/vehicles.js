@@ -7,7 +7,7 @@ function showForm(el, opt){
 	}	
 	if(opt=="add"){
 		$(tr).parent().children().fadeOut('slow');
-		trT=$("#trForm").find('tr');
+		var trT=$("#trForm").find('tr').clone();
 		$(tr).before(trT);
 		tr=trT;
 	}
@@ -72,7 +72,11 @@ function vSave(el){
 function vCancel(el){
 	var tr=$(el).parent().parent().empty();
 	$(tr).siblings().fadeIn('slow');
-	$(tr).append($(trTemp).children());
+	if($(trTemp).find('td.id').text()=="id"){
+		$(tr).remove();
+	}else{
+		$(tr).append($(trTemp).children());
+	}
 	$('.tooltip').remove();
 	$('[rel="tooltip"]').tooltip();
 }
@@ -97,6 +101,34 @@ function reloadTr(el, data){
 	$('.tooltip').remove();
 	$('[rel="tooltip"]').tooltip();
 	$(tr).siblings().fadeIn('slow');
+}
+
+function vDelete(el){
+	var tr=$(el).parent().parent();
+	var veid=$(tr).find('.id').text();
+	swal({
+	  title: "Estas seguro?",
+	  text: "Se eliminara el vehiculo y todos los datos relacionados a este!",
+	  type: "warning",
+	  showCancelButton: true,
+	  confirmButtonColor: "#DD4433",
+	  confirmButtonText: "Si",
+	  cancelButtonText: "No",
+	  closeOnConfirm: false
+	},
+	function(){
+		$.ajax({
+		  method: "DELETE",
+		  url: baseUrl+"/api/usuarios/"+userID+"/vehiculos/"+veid,
+		  success: function( msg ) {
+		  	$(tr).remove();
+		  	swal("Vehiculo eliminado.", "El vehiculo ha sido eliminado exitosamente.", "success");		  	
+		  },
+		  error: function( msg ) {
+		    swal("Ha ocurrido un error.", "No se pudo eliminar.", "error");
+		  }
+		});
+	});
 }
 
 $(document).ready(function(){

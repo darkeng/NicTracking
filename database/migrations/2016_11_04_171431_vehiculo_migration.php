@@ -19,7 +19,7 @@ class VehiculoMigration extends Migration
             $table->string('modelo');
             $table->string('color');
             $table->string('matricula')->unique();
-            $table->boolean('perdido')->default(0);
+            $table->boolean('perdido');
             $table->integer('user_id')->unsigned();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
