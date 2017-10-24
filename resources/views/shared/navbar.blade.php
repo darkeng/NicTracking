@@ -49,6 +49,30 @@
                     @endif
                 @endif
                 @if(Request::is('tracking-panel/map'))
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="material-icons">send</i>
+                            <p>Enviar señal<b class="caret"></b>
+                            </p>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">
+                                A1- Encender vocina
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                A2- Apagar motor
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                A3- Restaurar estado
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li>
                         <a class="togglebutton">
                             <label><input type="checkbox" class="track-switch">Seguimiento</label>

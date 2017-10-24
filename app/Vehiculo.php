@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Vehiculo extends Model
 {
     protected $table = 'vehiculos';
-	protected $fillable = array('tipo', 'marca', 'modelo', 'color', 'matricula', 'perdido', 'user_id');
+	protected $fillable = array('tipo', 'marca', 'modelo', 'color', 'matricula', 'perdido', 'accion', 'user_id');
 	protected $hidden = ['created_at', 'updated_at'];
 	
 	public function usuario()

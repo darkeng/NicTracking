@@ -65,11 +65,12 @@ class UserVehiculoController extends Controller
      */
     public function show($idUser, $idVe)
     {
-        if (!User::find($idUser))
+        $user=User::find($idUser);
+        if (!$user)
         {
             return response()->json(['error' => array('mensaje' => 'No se encontro el usuario.', 'codigo' => 404)], 404);
         }
-        $vehiculo=Vehiculo::find($idVe);
+        $vehiculo=$user->vehiculos()->find($idVe);
         if (!$vehiculo)
         {
             return response()->json(['error' => array('mensaje' => 'No se encontro el vehiculo.', 'codigo' => 404)], 404);
@@ -105,6 +106,7 @@ class UserVehiculoController extends Controller
         $modelo=$request->input('modelo');
         $color=$request->input('color'); 
         $matricula=$request->input('matricula');
+        $accion=$request->input('accion');
         $perdido=$request->input('perdido');
 
         // Necesitamos detectar si estamos recibiendo una petición PUT o PATCH.
@@ -145,6 +147,12 @@ class UserVehiculoController extends Controller
                 $bandera=true;
             }
 
+            if ($accion)
+            {
+                $vehiculo->accion = $accion;
+                $bandera=true;
+            }
+
             if ($perdido)
             {
                 $vehiculo->perdido = $perdido;
@@ -167,7 +175,7 @@ class UserVehiculoController extends Controller
         }
  
         // Si el método no es PATCH entonces es PUT y tendremos que actualizar todos los datos.
-        if (!$tipo || !$marca || !$modelo || !$color || !$matricula || !$perdido)
+        if (!$tipo || !$marca || !$modelo || !$color || !$matricula || !$accion || !$perdido)
         {
             // Se devuelve un array error con los errores encontrados y cabecera HTTP 422 Unprocessable Entity – [Entidad improcesable] Utilizada para errores de validación.
             return response()->json(['error'=>array(['mensaje'=>'Faltan valores para completar el proceso.', 'codigo'=>422])],422);
@@ -178,6 +186,7 @@ class UserVehiculoController extends Controller
         $vehiculo->modelo = $modelo;
         $vehiculo->color = $color;
         $vehiculo->matricula = $matricula;
+        $vehiculo->accion = $accion;
         $vehiculo->perdido = $perdido;
  
         // Almacenamos en la base de datos el registro.

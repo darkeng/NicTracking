@@ -83,7 +83,14 @@ class UserVehiculoTrackPosController extends Controller
         {
             return response()->json(['error'=>array('mensaje' => 'El vehiculo no posee un tracker.', 'codigo' => 404)], 404);
         }
-
+        if($request->has('accion'))
+        {
+            if($request->input('accion')=='ok')
+            {
+                $vehiculo->accion = 'A0';
+                $vehiculo->save();
+            }
+        }
         $validator = Validator::make($request->all(), [
             'velocidad' => 'required|numeric',
             'precision' => 'required|numeric',
@@ -100,7 +107,7 @@ class UserVehiculoTrackPosController extends Controller
         else
         {
             $track->posiciones()->create($request->all());
-            return response()->json(['ok'=>array('mensaje' => 'Recurso guardado.', 'codigo' => 201)], 201);
+            return response()->json(['ok'=>array('mensaje' => 'Recurso guardado.','accion' => $vehiculo->accion , 'codigo' => 201)], 201);
         }
             
     }
