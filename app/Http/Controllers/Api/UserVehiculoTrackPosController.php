@@ -93,12 +93,10 @@ class UserVehiculoTrackPosController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'velocidad' => 'required|numeric',
-            'precision' => 'required|numeric',
             'lat' => 'required|numeric',
             'lon' => 'required|numeric',
             'altitud' => 'required|numeric',
             'direccion' => 'required|numeric',
-            'precisionAlt' => 'required|numeric',
             'fecha_registro' => 'required|date',
         ]);
 
