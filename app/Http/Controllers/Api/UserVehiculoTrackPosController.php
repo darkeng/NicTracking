@@ -97,6 +97,7 @@ class UserVehiculoTrackPosController extends Controller
             'lat' => 'required|numeric',
             'lon' => 'required|numeric',
             'altitud' => 'required|numeric',
+            'direccion' => 'required|numeric',
             'precisionAlt' => 'required|numeric',
             'fecha_registro' => 'required|date',
         ]);

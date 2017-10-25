@@ -55,20 +55,20 @@
                             <p>Enviar señal<b class="caret"></b>
                             </p>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="dActions">
                             <li>
-                                <a href="#">
-                                A1- Encender vocina
+                                <a href="#" data-action="accion=A1">
+                                Activar pitido
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
-                                A2- Apagar motor
+                                <a href="#" data-action="accion=A2">
+                                Blink en faros
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
-                                A3- Restaurar estado
+                                <a href="#" data-action="accion=A3">
+                                Desbloquear puertas
                                 </a>
                             </li>
                         </ul>

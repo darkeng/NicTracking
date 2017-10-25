@@ -39,7 +39,7 @@ function showForm(el, opt){
 function vSave(el){
 	var methodO = "";
 	if (veID!="id"){
-		methodO = "PUT";
+		methodO = "PATCH";
 		veID="/"+veID;
 	}else {
 		methodO ="POST";

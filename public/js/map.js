@@ -405,6 +405,26 @@ function createElements(){
   map.addOverlay(geoMarker);
 }
 
+function actionsClick(el){
+  if($(".listVehicles").find("li").hasClass('active')){
+    
+    $.ajax({
+      method: 'PATCH',
+      url: baseUrl+"/api/usuarios/"+userID+"/vehiculos/"+veID,
+      data: $(el).data('action'),
+      success: function( msg ) {
+        swal("Accion enviada.", "", "success");
+      },
+      error: function( msg ) {
+        swal("No se pudo enviar la accion.", "", "error");
+      }
+    });
+  }
+    else{
+      swal("Selecciona un vehiculo", "Ve al menu MIS VEHICULOS y elige uno de tus vehiculos.");
+    }
+}
+
 function vehiclesClick(el){
   clearInterval(updater);
   veID=$(el).parent().data('vehicle').id;
@@ -457,6 +477,7 @@ $( document ).ready(function() {
   createElements();
   createMarkers();
   $(".listVehicles").find("a").attr("onclick", "vehiclesClick(this)");
+  $("#dActions").find("a").attr("onclick", "actionsClick(this)");
   $(".track-switch").attr("onchange", "trackingChange(this)");
   
   updater=setInterval(getPositionData, 500);
